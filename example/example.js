@@ -9,7 +9,6 @@ mti.init('test', {interval: 1}); //second: Boolean, minute: Boolean
 
 var i=0;
 
-
 mti.push(new Date(), i, false, {}, function(err, docs){});
 var timer;
 
