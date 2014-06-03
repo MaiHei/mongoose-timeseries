@@ -1,29 +1,24 @@
 {
     "name": "mongoose-ts",
     "version": "0.0.2",
-    "preferGlobal": false,
     "description": "Mongoose model for time series data",
     "preferGlobal": "true",
     "main": "index.js",
     "author": "Jussi Vatjus-Anttila <jussiva@gmail.com>",
-    "contributors": [ 
+    "contributors": [
       {
         "name": "Jussi Vatjus-Anttila",
         "email": "jussiva@gmail.com"
-      } 
+      }
     ],
-    "keywords": ["mongodb", "mongoose", "timeseries", "sensors", "temperature"],
+    "keywords": ["mongodb", "mongoose", "timeseries", "sensors"],
     "repository" : {
         "type": "git",
-        "url": "https://github.com/jupe/mongoose-timeseries.git"
+        "url": "https://github.com/jensoleg/mongoose-timeseries.git"
     },
     "dependencies": {
       "mongoose": "*",
       "underscore": "*"
-    },
-    "devDependencies": {
-        "mocha": "*",
-        "chai": "*"
     },
     "license": "MIT",
     "engines": { "node": ">=0.8.0" },
