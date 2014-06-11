@@ -7,8 +7,8 @@
     "author": "Jussi Vatjus-Anttila <jussiva@gmail.com>",
     "contributors": [
         {
-            "name": "Jussi Vatjus-Anttila",
-            "email": "jussiva@gmail.com"
+            "name": "Jens-Ole Graulund",
+            "email": "jensole@graulund.net"
         }
     ],
     "keywords": ["mongodb", "mongoose", "timeseries", "sensors"],
@@ -17,7 +17,7 @@
         "url": "https://github.com/jensoleg/mongoose-timeseries.git"
     },
     "dependencies": {
-        "mongoose": "*",
+        "mongoose": "^3.8.12",
         "underscore": "*"
     },
     "license": "MIT",
