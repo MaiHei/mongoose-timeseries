@@ -1,6 +1,6 @@
 {
   "name": "mongoose-ts",
-  "version": "0.0.3",
+  "version": "1.1.0",
   "description": "Mongoose model for time series data",
   "preferGlobal": "true",
   "main": "index.js",
