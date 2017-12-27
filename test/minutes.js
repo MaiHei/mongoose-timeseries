@@ -52,7 +52,6 @@ describe('minutes -', function () {
                         //console.log(doc);
                         assert.typeOf(error, 'null');
                         assert.typeOf(doc, 'object');
-                        assert.equal(doc.actor, 0, 'actor');
                         assert.typeOf(doc.minutes, 'array');
                         assert.equal(doc.day.getTime(), new Date(2013, 6, 16).getTime());
                         assert.equal(doc.latest.value, i, 'Latest');

@@ -39,7 +39,6 @@ describe('hours push -', function () {
                         //console.log(Object.keys(doc.hourly));
                         assert.typeOf(error, 'null');
                         assert.typeOf(doc, 'object');
-                        assert.equal(doc.actor, 0, 'actor');
                         assert.equal(doc.day.getTime(), new Date(2013, 6, 16).getTime());
                         assert.equal(doc.latest.value, i, 'Latest');
                         assert.equal(doc.hourly[i].value, i, 'current');
