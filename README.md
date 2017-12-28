@@ -3,8 +3,9 @@ mongoose-timeseries
 
 Mongoose model for general time series data.
 
-Tested with node.js version 0.6, 0.8, 0.10.
-[![Build Status](https://travis-ci.org/jupe/mongoose-timeseries.png?branch=master)](https://travis-ci.org/jupe/mongoose-timeseries)
+Tested with node.js version 8.
+
+[![Build Status](https://travis-ci.org/sremberg/mongoose-timeseries.svg?branch=master)](https://travis-ci.org/sremberg/mongoose-timeseries)
 
 Purpose:
 --------
@@ -21,7 +22,7 @@ for whole measure period ( not as the "rrdtool"-type databases, which lose infor
 Installation
 ------------
 
-npm install mongoose-ts (not yet)
+~~npm install mongoose-ts~~ (not yet)
 
 
 API
