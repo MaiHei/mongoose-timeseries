@@ -34,7 +34,6 @@ describe('daily -', function () {
 
                 mti.push(moment(new Date(2013, 6, i, 0)),
                     i,
-                    {test: i},
                     false,
                     function (error, doc) {
                         assert.typeOf(error, 'null');

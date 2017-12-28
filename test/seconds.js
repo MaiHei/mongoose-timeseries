@@ -52,7 +52,6 @@ describe('seconds -', function () {
                 //console.log('Time: '+hour+':'+min);
                 mti.push(moment.utc(Date.UTC(2013, 6, 16, hour, min, sec)),
                     i,
-                    {test: i},
                     false,
                     function (error, doc) {
 
@@ -65,12 +64,6 @@ describe('seconds -', function () {
                         assert.equal(doc.latest.value, i, 'Latest');
                         assert.equal(doc.statistics.count, i + 1);
                         assert.equal(doc.seconds[hour][min][sec].value, i, 'current');
-                        assert.equal(doc.seconds[hour][min][sec].metadata.test, i, 'metadata');
-                        assert.equal(doc.seconds[hour][min][sec].metadata.test, i, 'metadata');
-
-                        //assert.equal( Object.keys(doc.hourly).length, i+1, 'hourly length');
-
-                        //console.log('Loop '+i+' OK.');
 
                         loop(i + 1, count, cb);
 

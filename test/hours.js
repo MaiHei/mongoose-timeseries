@@ -40,20 +40,13 @@ describe('hours push -', function () {
 
                 mti.push(moment.utc(Date.UTC(2013, 6, 16, i)),
                     i,
-                    {test: i},
                     false,
                     function (error, doc) {
-                        //console.log('Hour: '+i);
-                        //console.log(Object.keys(doc.hourly));
                         assert.typeOf(error, 'null');
                         assert.typeOf(doc, 'object');
                         assert.equal(doc.day.getTime(), new Date(2013, 6, 16).getTime());
                         assert.equal(doc.latest.value, i, 'Latest');
                         assert.equal(doc.hourly[i].value, i, 'current');
-
-                        //assert.equal( Object.keys(doc.hourly).length, i+1);
-
-                        //console.log('Loop '+i+' OK.');
                         loop(i + 1, count, cb);
                     });
             } else {

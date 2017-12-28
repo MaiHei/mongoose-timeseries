@@ -51,7 +51,6 @@ describe('minutes -', function () {
                 var min = i % 60;
                 mti.push(moment.utc(Date.UTC(2013, 6, 16, hour, min)),
                     i,
-                    {test: i},
                     false,
                     function (error, doc) {
                         
