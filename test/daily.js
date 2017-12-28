@@ -62,8 +62,8 @@ describe('daily -', function () {
             var i;
             for (i = 0; i < 10; i++) {
                 assert.equal(docs[i].statistics.count, 1);
-                assert.equal(docs[i].statistics.min.value, i + 1);
-                assert.equal(docs[i].statistics.max.value, i + 1);
+                assert.equal(docs[i].statistics.min, i + 1);
+                assert.equal(docs[i].statistics.max, i + 1);
                 assert.equal(docs[i].statistics.avg, i + 1);
             }
             done();
@@ -77,7 +77,7 @@ describe('daily -', function () {
             to: moment(Date.UTC(2013, 6, 16))
         }, function (e, min) {
             assert.typeOf(e, 'null');
-            assert.equal(min.value, 1);
+            assert.equal(min, 1);
             done();
         })
     });
@@ -89,7 +89,7 @@ describe('daily -', function () {
             to: moment(Date.UTC(2013, 6, 16))
         }, function (e, max) {
             assert.typeOf(e, 'null');
-            assert.equal(max.value, 10);
+            assert.equal(max, 10);
             done();
         })
     });

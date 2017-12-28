@@ -73,8 +73,8 @@ describe('hours push -', function () {
             assert.equal(docs.length, 1);
             //console.log('stats: '+JSON.stringify(docs[0].statistics));
             assert.equal(docs[0].statistics.count, 10);
-            assert.equal(docs[0].statistics.min.value, 0);
-            assert.equal(docs[0].statistics.max.value, 9);
+            assert.equal(docs[0].statistics.min, 0);
+            assert.equal(docs[0].statistics.max, 9);
             assert.equal(docs[0].statistics.sum/docs[0].statistics.count, 4.5); //avg to be done
             done();
         });
@@ -87,7 +87,7 @@ describe('hours push -', function () {
             to: moment.utc(Date.UTC(2013, 6, 16))
         }, function (e, min) {
             assert.typeOf(e, 'null');
-            assert.equal(min.value, 0);
+            assert.equal(min, 0);
             done();
         })
     });
@@ -99,7 +99,7 @@ describe('hours push -', function () {
             to: moment.utc(Date.UTC(2013, 6, 16))
         }, function (e, max) {
             assert.typeOf(e, 'null');
-            assert.equal(max.value, 9);
+            assert.equal(max, 9);
             done();
         })
     });

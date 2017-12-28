@@ -49,15 +49,12 @@ describe('minutes -', function () {
             if (i < count) {
                 var hour = 12 + Math.floor(i / 60);
                 var min = i % 60;
-                //console.log('Time: '+hour+':'+min);
                 mti.push(moment.utc(Date.UTC(2013, 6, 16, hour, min)),
                     i,
                     {test: i},
                     false,
                     function (error, doc) {
-
-                        //console.log(error);
-                        //console.log(doc);
+                        
                         assert.typeOf(error, 'null');
                         assert.typeOf(doc, 'object');
                         assert.typeOf(doc.minutes, 'array');
@@ -65,16 +62,11 @@ describe('minutes -', function () {
                         assert.equal(doc.latest.value, i, 'Latest');
                         assert.equal(doc.statistics.count, i + 1);
                         assert.equal(doc.minutes[hour][min].value, i, 'current');
-
-                        //assert.equal( Object.keys(doc.hourly).length, i+1, 'hourly length');
-
-                        //console.log('Loop '+i+' OK.');
-
+                        
                         loop(i + 1, count, cb);
 
                     });
             } else {
-                //setInterval( cb, 1000 );
                 cb();
             }
         }
@@ -95,14 +87,13 @@ describe('minutes -', function () {
             assert.typeOf(e, 'null');
             assert.typeOf(docs, 'array');
             assert.equal(docs.length, 1);
-            //console.log('stats: '+JSON.stringify(docs[0].statistics));
             assert.typeOf(docs[0], 'object');
             assert.typeOf(docs[0].statistics, 'object');
             assert.equal(docs[0].statistics.count, 360);
-            assert.equal(docs[0].statistics.min.value, 0);
-            assert.equal(docs[0].statistics.max.value, 359);
+            assert.equal(docs[0].statistics.min, 0);
+            assert.equal(docs[0].statistics.max, 359);
             assert.equal(docs[0].statistics.sum / docs[0].statistics.count, 179.5);
-            // assert.equal(docs[0].statistics.avg, 179.5);
+            assert.equal(docs[0].statistics.avg, 179.5);
             done();
         });
     });
@@ -114,7 +105,7 @@ describe('minutes -', function () {
             to: moment.utc(Date.UTC(2013, 6, 16))
         }, function (e, min) {
             assert.typeOf(e, 'null');
-            assert.equal(min.value, 0);
+            assert.equal(min, 0);
             done();
         })
     });
@@ -126,7 +117,7 @@ describe('minutes -', function () {
             to: moment.utc(Date.UTC(2013, 6, 16))
         }, function (e, max) {
             assert.typeOf(e, 'null');
-            assert.equal(max.value, 359);
+            assert.equal(max, 359);
             done();
         })
     });
