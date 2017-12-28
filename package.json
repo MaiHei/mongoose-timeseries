@@ -9,6 +9,10 @@
     {
       "name": "Jens-Ole Graulund",
       "email": "jensole@graulund.net"
+    },
+    {
+      "name": "Simon Remberg",
+      "email": "s.remberg@arcor.de"
     }
   ],
   "keywords": [
@@ -23,7 +27,7 @@
   },
   "dependencies": {
     "moment": "^2.8.1",
-    "mongoose": "3.8.37",
+    "mongoose": "*",
     "underscore": "*"
   },
   "license": "MIT",
@@ -32,5 +36,10 @@
   },
   "scripts": {
     "test": "mocha -R list"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1",
+    "q": "^1.5.1"
   }
 }

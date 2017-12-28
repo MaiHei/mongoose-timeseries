@@ -7,9 +7,11 @@ lib-cov
 *.pid
 *.gz
 .idea
-
+.vscode
+node_modules
 pids
 logs
 results
 
+package-lock.json
 npm-debug.log

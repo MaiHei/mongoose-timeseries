@@ -1,6 +1,7 @@
 var assert = require('chai').assert;
-var mongoose = require('mongoose');
 var MTI = require('../');
+var moment = require('moment');
+var test_mongoose = require('./test-mongoose.js');
 var mti;
 
 //mongoose.connect('mongodb://localhost/mti');
@@ -9,11 +10,13 @@ var mti;
 describe('daily -', function () {
 
     before(function (done) {
-
-        mti = new MTI('daily', {interval: 86400/* 24h */, postProcessImmediately: true});
-        mti.model.remove({}, function () {
-            done();
-        });
+        
+        test_mongoose().then(function (mongoose) {
+            mti = new MTI(mongoose,'daily', {interval: 86400/* 24h */, postProcessImmediately: true});
+            mti.model.remove({}, function () {
+                done();
+            });
+        }).catch((err) => assert.fail())
     });
 
     it('init', function (done) {
@@ -28,22 +31,15 @@ describe('daily -', function () {
         var loop = function (i, count, cb) {
             if (i < count) {
 
-                mti.push(new Date(2013, 6, i, 0),
+                mti.push(moment(new Date(2013, 6, i, 0)),
                     i,
                     {test: i},
                     false,
                     function (error, doc) {
-                        //console.log('Hour: '+i);
-                        //console.log(Object.keys(doc.hourly));
                         assert.typeOf(error, 'null');
                         assert.typeOf(doc, 'object');
-                        assert.equal(doc.actor, 0, 'actor');
                         assert.equal(doc.day.getTime(), new Date(2013, 6, i).getTime());
                         assert.equal(doc.latest.value, i, 'Latest');
-                        assert.equal(doc.daily.value, i, 'current');
-                        assert.equal(doc.daily.metadata.test, i, 'metadata');
-
-                        //console.log('Loop '+i+' OK.');
                         loop(i + 1, count, cb);
                     });
             } else {
@@ -64,7 +60,7 @@ describe('daily -', function () {
             //console.log('stats: '+JSON.stringify(docs[0].statistics));
             var i;
             for (i = 0; i < 10; i++) {
-                assert.equal(docs[i].statistics.i, 1);
+                assert.equal(docs[i].statistics.count, 1);
                 assert.equal(docs[i].statistics.min.value, i + 1);
                 assert.equal(docs[i].statistics.max.value, i + 1);
                 assert.equal(docs[i].statistics.avg, i + 1);
@@ -75,8 +71,9 @@ describe('daily -', function () {
 
     it('findMin', function (done) {
         //collection
-        mti.findMin({from: new Date(2013, 6, 0),
-            to: new Date(2013, 6, 16)
+        mti.findMin({
+            from: moment(Date.UTC(2013, 6, 0)),
+            to: moment(Date.UTC(2013, 6, 16))
         }, function (e, min) {
             assert.typeOf(e, 'null');
             assert.equal(min.value, 1);
@@ -86,8 +83,9 @@ describe('daily -', function () {
 
     it('findMax', function (done) {
         //collection
-        mti.findMax({from: new Date(2013, 6, 0),
-            to: new Date(2013, 6, 16)
+        mti.findMax({
+            from: moment(Date.UTC(2013, 6, 0)),
+            to: moment(Date.UTC(2013, 6, 16))
         }, function (e, max) {
             assert.typeOf(e, 'null');
             assert.equal(max.value, 10);
@@ -101,8 +99,9 @@ describe('daily fetch', function () {
     //var format = '[ms,y]'
 
     it('getData - format[x,y]', function (done) {
-        mti.findData({from: new Date(2013, 5, 30),
-            to: new Date(2013, 6, 10),
+        mti.findData({
+            from: moment.utc(Date.UTC(2013, 5, 30)),
+            to: moment.utc(Date.UTC(2013, 6, 10)),
             condition: {},
             format: '[x,y]'
         }, function (e, data) {
@@ -115,7 +114,7 @@ describe('daily fetch', function () {
                 assert.typeOf(row, 'array');
                 assert.equal(row.length, 2);
                 assert.equal(row[1], i++);
-                assert.typeOf(row[0], 'Date');
+                assert.isTrue(moment.isMoment(row[0]));
                 assert.typeOf(row[1], 'number');
             });
             done();
@@ -123,8 +122,9 @@ describe('daily fetch', function () {
     });
 
     it('getData (half period)-format[x,y]', function (done) {
-        mti.findData({from: new Date(2013, 6, 2),
-            to: new Date(2013, 6, 4),
+        mti.findData({
+            from: moment.utc(Date.UTC(2013, 6, 2)),
+            to: moment.utc(Date.UTC(2013, 6, 4)),
             condition: {},
             format: '[x,y]'
         }, function (e, data) {
@@ -136,7 +136,7 @@ describe('daily fetch', function () {
                 assert.typeOf(row, 'array');
                 assert.equal(row.length, 2);
                 assert.equal(row[1], i++);
-                assert.typeOf(row[0], 'Date');
+                assert.isTrue(moment.isMoment(row[0]));
                 assert.typeOf(row[1], 'number');
             });
             done();
@@ -144,8 +144,9 @@ describe('daily fetch', function () {
     });
 
     it('getData-format[ms,y]', function (done) {
-        mti.findData({from: new Date(2013, 6, 1),
-            to: new Date(2013, 6, 6),
+        mti.findData({
+            from: moment.utc(Date.UTC(2013, 6, 1)),
+            to: moment.utc(Date.UTC(2013, 6, 6)),
             condition: {},
             format: '[ms,y]'
         }, function (e, data) {
