@@ -8,7 +8,7 @@ describe('seconds -', function () {
 
     before(function (done) {
        
-        test_mongoose().then(function (mongoose) {
+        test_mongoose.open().then(function (mongoose) {
             mti = new MTI(mongoose, 'seconds', {interval: 1, postProcessImmediately: true, verbose: false});
             mti.model.remove({}, function () {
                 done();
@@ -16,6 +16,11 @@ describe('seconds -', function () {
         }).catch((err) => assert.fail())
 
 
+    });
+        
+    //After all tests are finished drop database and close connection
+    after(function(done){
+        test_mongoose.close(done);
     });
 
     it('init', function (done) {
