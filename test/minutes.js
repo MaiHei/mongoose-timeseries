@@ -1,6 +1,7 @@
 var assert = require('chai').assert;
-var mongoose = require('mongoose');
 var MTI = require('../');
+var moment = require('moment');
+var test_mongoose = require('./test-mongoose.js');
 var mti;
 
 //mongoose.connect('mongodb://localhost/mti');
@@ -10,11 +11,12 @@ describe('minutes -', function () {
 
     before(function (done) {
 
-        mti = new MTI('minutes', {interval: 60, verbose: false});
-        //Clear all
-        mti.model.remove({}, function () {
-            done();
-        });
+        test_mongoose().then(function (mongoose) {
+            mti = new MTI(mongoose, 'minutes', {interval: 60, verbose: false});
+            mti.model.remove({}, function () {
+                done();
+            });
+        }).catch((err) => assert.fail())
     });
 
     it('init', function (done) {
@@ -42,7 +44,7 @@ describe('minutes -', function () {
                 var hour = 12 + Math.floor(i / 60);
                 var min = i % 60;
                 //console.log('Time: '+hour+':'+min);
-                mti.push(new Date(2013, 6, 16, hour, min),
+                mti.push(moment.utc(Date.UTC(2013, 6, 16, hour, min)),
                     i,
                     {test: i},
                     false,
@@ -55,9 +57,8 @@ describe('minutes -', function () {
                         assert.typeOf(doc.minutes, 'array');
                         assert.equal(doc.day.getTime(), new Date(2013, 6, 16).getTime());
                         assert.equal(doc.latest.value, i, 'Latest');
-                        assert.equal(doc.statistics.i, i + 1);
+                        assert.equal(doc.statistics.count, i + 1);
                         assert.equal(doc.minutes[hour][min].value, i, 'current');
-                        assert.equal(doc.minutes[hour][min].metadata.test, i, 'metadata');
 
                         //assert.equal( Object.keys(doc.hourly).length, i+1, 'hourly length');
 
@@ -77,7 +78,7 @@ describe('minutes -', function () {
     });
 
     it('doc post process', function (done) {
-        mti.model.recalc(new Date(2013, 6, 16), 0, function () {
+        mti.model.recalc(moment.utc(Date.UTC(2013, 6, 16)), 0, function () {
             done();
         });
     });
@@ -91,18 +92,20 @@ describe('minutes -', function () {
             //console.log('stats: '+JSON.stringify(docs[0].statistics));
             assert.typeOf(docs[0], 'object');
             assert.typeOf(docs[0].statistics, 'object');
-            assert.equal(docs[0].statistics.i, 360);
+            assert.equal(docs[0].statistics.count, 360);
             assert.equal(docs[0].statistics.min.value, 0);
             assert.equal(docs[0].statistics.max.value, 359);
-            assert.equal(docs[0].statistics.avg, 179.5);
+            assert.equal(docs[0].statistics.sum / docs[0].statistics.count, 179.5);
+            // assert.equal(docs[0].statistics.avg, 179.5);
             done();
         });
     });
 
     it('findMin', function (done) {
         //collection
-        mti.findMin({from: new Date(2013, 6, 16),
-            to: new Date(2013, 6, 16)
+        mti.findMin({
+            from: moment.utc(Date.UTC(2013, 6, 16)),
+            to: moment.utc(Date.UTC(2013, 6, 16))
         }, function (e, min) {
             assert.typeOf(e, 'null');
             assert.equal(min.value, 0);
@@ -112,8 +115,9 @@ describe('minutes -', function () {
 
     it('findMax', function (done) {
         //collection
-        mti.findMax({from: new Date(2013, 6, 16),
-            to: new Date(2013, 6, 16)
+        mti.findMax({
+            from: moment.utc(Date.UTC(2013, 6, 16)),
+            to: moment.utc(Date.UTC(2013, 6, 16))
         }, function (e, max) {
             assert.typeOf(e, 'null');
             assert.equal(max.value, 359);

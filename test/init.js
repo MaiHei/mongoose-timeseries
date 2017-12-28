@@ -1,18 +1,23 @@
 var assert = require('chai').assert;
-var mongoose = require('mongoose');
 var MTI = require('../');
+var moment = require('moment');
+var test_mongoose = require('./test-mongoose.js');
 
-mongoose.connect('mongodb://localhost/mti');
+var mongoose_init;
 //mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
 //mongoose.connection.on('open', console.log.bind(console, 'connection:'));
 
 describe('init -', function () {
     before(function (done) {
-        done();
+        test_mongoose().then(function (mongoose) {
+            mongoose_init = mongoose;
+            done();
+        }).catch((err) => assert.fail())
     });
     it('hour', function (done) {
         //collection
-        var mti4 = new MTI('mti4', {interval: 3600});
+
+        var mti4 = new MTI(mongoose_init, 'mti4', {interval: 3600});
 
         var schema = mti4.getSchema();
         var model = mti4.getModel();
@@ -29,7 +34,7 @@ describe('init -', function () {
 
     it('minute', function (done) {
         //collection
-        var mti3 = new MTI('mti3', {interval: 60});
+        var mti3 = new MTI(mongoose_init,'mti3', {interval: 60});
 
         var schema = mti3.getSchema();
         var model = mti3.getModel();
@@ -46,14 +51,14 @@ describe('init -', function () {
 
     it('seconds', function (done) {
         //collection
-        var mti2 = new MTI('test', {interval: 1});
+        var mti2 = new MTI(mongoose_init, 'mti2', {interval: 1});
 
         var schema = mti2.getSchema();
         var model = mti2.getModel();
 
         assert.typeOf(schema, 'object');
         assert.typeOf(model, 'function');
-        assert.equal(model.modelName, 'test');
+        assert.equal(model.modelName, 'mti2');
         assert.typeOf(schema.path('hourly'), 'object');
         assert.typeOf(schema.path('minutes'), 'object');
         assert.typeOf(schema.path('seconds'), 'object');
