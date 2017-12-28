@@ -9,11 +9,17 @@ var mongoose_init;
 
 describe('init -', function () {
     before(function (done) {
-        test_mongoose().then(function (mongoose) {
+        test_mongoose.open().then(function (mongoose) {
             mongoose_init = mongoose;
             done();
         }).catch((err) => assert.fail())
     });
+    
+    //After all tests are finished drop database and close connection
+    after(function(done){
+        test_mongoose.close(done);
+    });
+
     it('hour', function (done) {
         //collection
 

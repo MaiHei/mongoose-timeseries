@@ -11,13 +11,14 @@ describe('daily -', function () {
 
     before(function (done) {
         
-        test_mongoose().then(function (mongoose) {
+        test_mongoose.open().then(function (mongoose) {
             mti = new MTI(mongoose,'daily', {interval: 86400/* 24h */, postProcessImmediately: true});
             mti.model.remove({}, function () {
                 done();
             });
         }).catch((err) => assert.fail())
     });
+    
 
     it('init', function (done) {
         mti.model.count({}, function (e, c) {
@@ -94,6 +95,12 @@ describe('daily -', function () {
     });
 });
 describe('daily fetch', function () {
+    
+    //After all tests are finished drop database and close connection
+    after(function(done){
+        test_mongoose.close(done);
+    });
+
     //var format = 'hash'
     //var format = '[x,y]'
     //var format = '[ms,y]'
