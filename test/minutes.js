@@ -60,7 +60,7 @@ describe('minutes -', function () {
                         assert.equal(doc.day.getTime(), new Date(2013, 6, 16).getTime());
                         assert.equal(doc.latest.value, i, 'Latest');
                         assert.equal(doc.statistics.count, i + 1);
-                        assert.equal(doc.minutes[hour][min].value, i, 'current');
+                        assert.equal(doc.minutes[hour][min].sum / doc.minutes[hour][min].count, i, 'current'); //to be .avg
                         
                         loop(i + 1, count, cb);
 

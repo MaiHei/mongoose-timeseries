@@ -12,7 +12,7 @@ describe('hours push -', function () {
     before(function (done) {
 
         test_mongoose.open().then(function (mongoose) {
-            mti = new MTI(mongoose,'test', {interval: 3600, postProcessImmediately: true});
+            mti = new MTI(mongoose,'hours', {interval: 3600, postProcessImmediately: true});
             mti.model.remove({}, function () {
                 done();
             });
