@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose');//.set('debug', true);;
 var Q = require('q');
 mongoose.Promise = Q.Promise;
 

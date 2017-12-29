@@ -46,7 +46,7 @@ describe('hours push -', function () {
                         assert.typeOf(doc, 'object');
                         assert.equal(doc.day.getTime(), new Date(2013, 6, 16).getTime());
                         assert.equal(doc.latest.value, i, 'Latest');
-                        assert.equal(doc.hourly[i].value, i, 'current');
+                       // assert.equal(doc.hourly[i].value, i, 'current');
                         loop(i + 1, count, cb);
                     });
             } else {
