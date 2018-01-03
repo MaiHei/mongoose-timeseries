@@ -44,13 +44,16 @@ describe('seconds -', function () {
 
     it('pushes', function (done) {
         this.timeout(60000);
+        
+        var hour = function (i) { return 6; }
+        var min = function (i) { return Math.floor(i / 60); }
+        var sec = function (i) { return i % 60; }
+        var iMax = 10;
+
         var loop = function (i, count, cb) {
             if (i < count) {
-                var hour = 6;
-                var min = Math.floor(i / 60);
-                var sec = i % 60;
                 //console.log('Time: '+hour+':'+min);
-                mti.push(moment.utc(Date.UTC(2013, 6, 16, hour, min, sec)),
+                mti.push(moment.utc(Date.UTC(2013, 6, 16, hour(i), min(i), sec(i))),
                     i,
                     false,
                     function (error, doc) {
@@ -59,11 +62,10 @@ describe('seconds -', function () {
                         //console.log(doc);
                         assert.typeOf(error, 'null');
                         assert.typeOf(doc, 'object');
-                        assert.typeOf(doc.minutes, 'array');
+                        //assert.typeOf(doc.minutes, 'array');
                         assert.equal(doc.day.getTime(), new Date(2013, 6, 16).getTime());
                         assert.equal(doc.latest.value, i, 'Latest');
                         assert.equal(doc.statistics.count, i + 1);
-                        assert.equal(doc.seconds[hour][min][sec].value, i, 'current');
 
                         loop(i + 1, count, cb);
 
@@ -73,8 +75,23 @@ describe('seconds -', function () {
                 cb();
             }
         }
-        loop(0, 1, function () { //every minute between 0...359
-            done();
+        loop(0, iMax, function () { //every minute between 0...359
+            
+            mti.findRaw({
+                from: moment.utc(Date.UTC(2013, 6, 16)),
+                to: moment.utc(Date.UTC(2013, 6, 16)),
+                condition: {}
+            },function(error, docs) {
+                assert.typeOf(docs, 'array');
+                assert.equal(docs.length, 1);
+                var doc = docs[0];
+                assert.typeOf(doc.minutes, 'array');
+                for(var index = 0;index < iMax; index++) {
+                    assert.equal(doc.seconds[hour(index)][min(index)][sec(index)].value, index, 'current');
+                    // assert.equal(doc.minutes[hour(index)][min(index)].sum/doc.minutes[hour(index)][min(index)].count, index, 'current'); //to be .avg
+                }
+                done();
+            });
         });
     });
     /*
