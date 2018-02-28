@@ -61,7 +61,7 @@ describe('hours push -', function () {
     it('doc count', function (done) {
         //collection
         mti.model.find({}, function (e, docs) {
-            assert.typeOf(e, 'null');
+            assert.typeOf(e, 'undefined');
             assert.typeOf(docs, 'array');
             assert.equal(docs.length, 1);
             //console.log('stats: '+JSON.stringify(docs[0].statistics));
