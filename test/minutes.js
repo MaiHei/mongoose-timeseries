@@ -12,7 +12,7 @@ describe('minutes -', function () {
     before(function (done) {
 
         test_mongoose.open().then(function (mongoose) {
-            mti = new MTI(mongoose, 'minutes', {interval: 60, verbose: false});
+            mti = new MTI(mongoose, 'minutes', {interval: 60, postProcessImmediately: true});
             mti.model.remove({}, function () {
                 done();
             });
